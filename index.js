@@ -93,18 +93,28 @@ async function run() {
             res.send(result)
         })
         //user
+        app.post('/user', async (req, res) => {
+            const newUserInfo = req.body;
+            const result = await userCollection.insertOne(newUserInfo);
+            res.send(result)
+        })
+        //get one user 
+        app.get('/user/:email', async (req, res) => {
+            console.log(req.params)
+            const email = req.params.email;
+            const query = { email: email };
+            const cursor = await userCollection.find(query);
+            const documents = await cursor.toArray()
+            res.send(documents)
+
+        })
     }
     finally {
 
     }
 }
 run().catch(console.dir)
-// client.connect(err => {
 
-//     const collection = client.db("test").collection("devices");
-//     // perform actions on the collection object
-//     client.close();
-// });
 
 
 
